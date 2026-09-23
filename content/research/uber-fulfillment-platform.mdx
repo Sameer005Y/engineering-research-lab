@@ -1,0 +1,64 @@
+---
+title: "Uber Fulfillment Platform"
+company: "Uber"
+slug: "uber-fulfillment-platform"
+description: "Understanding how Uber handles fulfillment, matching, concurrency, events, reliability, and scale."
+---
+
+# Uber Fulfillment Platform
+
+## Problem
+
+Uber needs to match customer requests with the right providers while maintaining consistent state across a large distributed system.
+
+## Business Workflow
+
+A simplified fulfillment workflow looks like this:
+
+Customer Request  
+→ Fulfillment  
+→ Provider Matching  
+→ Offer  
+→ Acceptance  
+→ Trip or Delivery  
+→ Completion
+
+## Engineering Problems
+
+Some important problems include:
+
+- Dynamic provider availability
+- Concurrent operations
+- Consistent state
+- Multi-entity updates
+- Event distribution
+- Failure isolation
+- Large-scale traffic
+
+## Technologies
+
+The research will examine:
+
+- Distributed storage
+- Redis
+- APIs
+- Events
+- Concurrency control
+- Replication
+- Microservices
+
+## What We Can Learn
+
+The important question isn't simply which technologies Uber uses.
+
+The important question is:
+
+> What engineering problem required each technology or architectural decision?
+
+## Smaller System We Can Build
+
+Based on this research, we can design a smaller:
+
+**Local Service Dispatch Platform**
+
+A customer creates a service request, available technicians are matched with the request, and the selected technician can accept or reject the job.
