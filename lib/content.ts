@@ -1,6 +1,6 @@
-import fs from "fs";
-import path from "path";
-import matter from "gray-matter";
+import { connectDB } from "./mongodb";
+import Article from "@/models/Article";
+import type { Category } from "@/models/Article";
 
 export type ArticleMeta = {
   title: string;
@@ -9,23 +9,23 @@ export type ArticleMeta = {
   description: string;
 };
 
-export function getArticles(category: string): ArticleMeta[] {
-  const dir = path.join(process.cwd(), "content", category);
-  if (!fs.existsSync(dir)) return [];
+export async function getArticles(category: Category): Promise<ArticleMeta[]> {
+  await connectDB();
 
-  return fs
-    .readdirSync(dir)
-    .filter((f) => f.endsWith(".mdx"))
-    .map((file) => {
-      const raw = fs.readFileSync(path.join(dir, file), "utf8");
-      const { data } = matter(raw);
-      return data as ArticleMeta;
-    })
-    .filter((a) => a.title); // skip empty/broken files instead of crashing
+  const articles = await Article.find({ category })
+    .sort({ createdAt: -1 })
+    .lean();
+
+  return articles.map((a) => ({
+    title: a.title,
+    company: a.company,
+    slug: a.slug,
+    description: a.description,
+  }));
 }
 
-  export function getArticleSource(category: string, slug: string) {
-    const filePath = path.join(process.cwd(), "content", category, `${slug}.mdx`);
-    if (!fs.existsSync(filePath)) return null;
-    return fs.readFileSync(filePath, "utf8");
-  }
+export async function getArticleBySlug(category: Category, slug: string) {
+  await connectDB();
+  const article = await Article.findOne({ category, slug }).lean();
+  return article;
+}
