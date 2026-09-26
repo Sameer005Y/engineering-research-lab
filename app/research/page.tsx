@@ -1,58 +1,8 @@
-import fs from "fs";
-import path from "path";
 import Link from "next/link";
-
-type ResearchMetadata = {
-  title: string;
-  company: string;
-  slug: string;
-  description: string;
-};
-
-function getResearchArticles(): ResearchMetadata[] {
-  const researchDirectory = path.join(
-    process.cwd(),
-    "content",
-    "research",
-  );
-
-  const files = fs
-    .readdirSync(researchDirectory)
-    .filter((file) => file.endsWith(".mdx"));
-
-  return files.map((file) => {
-    const filePath = path.join(researchDirectory, file);
-    const content = fs.readFileSync(filePath, "utf8");
-
-    const frontmatterMatch = content.match(
-      /^---\s*([\s\S]*?)\s*---/,
-    );
-
-    if (!frontmatterMatch) {
-      throw new Error(`Missing frontmatter in ${file}`);
-    }
-
-    const frontmatter = frontmatterMatch[1];
-
-    const getValue = (key: string) => {
-      const match = frontmatter.match(
-        new RegExp(`^${key}:\\s*["']?(.*?)["']?$`, "m"),
-      );
-
-      return match?.[1] ?? "";
-    };
-
-    return {
-      title: getValue("title"),
-      company: getValue("company"),
-      slug: getValue("slug"),
-      description: getValue("description"),
-    };
-  });
-}
+import { getArticles } from "@/lib/content";
 
 export default function ResearchPage() {
-  const articles = getResearchArticles();
+  const articles = getArticles("research");
 
   return (
     <main>
