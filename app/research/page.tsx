@@ -1,8 +1,8 @@
 import Link from "next/link";
 import { getArticles } from "@/lib/content";
 
-export default function ResearchPage() {
-  const articles = getArticles("research");
+export default async function ResearchPage() {
+  const articles = await getArticles("research");
 
   return (
     <main>
@@ -11,14 +11,11 @@ export default function ResearchPage() {
           <p className="text-sm font-medium uppercase tracking-widest text-gray-500">
             Engineering Research
           </p>
-
           <h1 className="mt-3 text-4xl font-bold tracking-tight md:text-5xl">
             Research
           </h1>
-
           <p className="mt-6 max-w-2xl text-lg leading-8 text-gray-600">
-            Research into how real-world companies solve engineering problems
-            at scale.
+            Research into how real-world companies solve engineering problems at scale.
           </p>
         </div>
       </section>
@@ -31,18 +28,9 @@ export default function ResearchPage() {
                 key={article.slug}
                 className="rounded-xl border border-gray-200 p-8 transition hover:border-gray-400"
               >
-                <p className="text-sm font-medium text-gray-500">
-                  {article.company}
-                </p>
-
-                <h2 className="mt-2 text-2xl font-semibold tracking-tight">
-                  {article.title}
-                </h2>
-
-                <p className="mt-4 max-w-2xl leading-7 text-gray-600">
-                  {article.description}
-                </p>
-
+                <p className="text-sm font-medium text-gray-500">{article.company}</p>
+                <h2 className="mt-2 text-2xl font-semibold tracking-tight">{article.title}</h2>
+                <p className="mt-4 max-w-2xl leading-7 text-gray-600">{article.description}</p>
                 <Link
                   href={`/research/${article.slug}`}
                   className="mt-6 inline-block text-sm font-medium underline underline-offset-4"

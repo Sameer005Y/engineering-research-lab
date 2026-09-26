@@ -1,8 +1,8 @@
 import Link from "next/link";
 import { getArticles } from "@/lib/content";
 
-export default function EngineeringPage() {
-  const articles = getArticles("engineering");
+export default async function EngineeringPage() {
+  const articles = await getArticles("engineering");
 
   return (
     <main>
